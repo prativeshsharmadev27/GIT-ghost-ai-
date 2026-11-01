@@ -43,8 +43,10 @@ export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, is
     }
     const issueTitle = mode === 'github' ? fetchedIssue.title : title.trim()
     const issueDescription = mode === 'github' ? fetchedIssue.body : description.trim()
-    if (!issueTitle || !issueDescription) {
-      setLocalError('Add an issue title and description before analyzing.')
+    if (!issueTitle || (mode === 'paste' && !issueDescription)) {
+      setLocalError(mode === 'paste'
+        ? 'Add an issue title and description before analyzing.'
+        : 'The fetched issue needs a title before it can be analyzed.')
       return
     }
     const request = {

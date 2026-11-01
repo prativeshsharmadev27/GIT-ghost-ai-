@@ -6,7 +6,7 @@ GitGhost AI turns an open-source GitHub issue into an approachable explanation, 
 
 ## Requirements
 
-- Node.js 20 or newer and npm
+- Node.js 20.19 or newer (or 22.12 or newer) and npm
 - A Google Gemini API key from [Google AI Studio](https://aistudio.google.com/apikey)
 - Optional: a GitHub personal access token to increase GitHub API rate limits
 
@@ -62,6 +62,17 @@ The Vite development server proxies `/api` requests to `http://localhost:5000`. 
 
 ```powershell
 cd gitghost-ai/client
+npm run build
+```
+
+## Tests and checks
+
+```powershell
+cd gitghost-ai/server
+npm test
+
+cd ..\client
+npm run lint
 npm run build
 ```
 

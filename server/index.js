@@ -30,6 +30,10 @@ app.use((error, _request, response, _next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`GitGhost AI API listening on http://localhost:${port}`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`GitGhost AI API listening on http://localhost:${port}`);
+  });
+}
+
+module.exports = app;
