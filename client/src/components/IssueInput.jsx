@@ -1,6 +1,6 @@
 import { ArrowUpRight, CheckCircle2, FileText, GitBranch, LoaderCircle, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import demoIssue from '../data/demoIssue'
+import demoIssue, { demoIssues } from '../data/demoIssue'
 
 export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, issueData, clearError }) {
   const [mode, setMode] = useState('github')
@@ -60,27 +60,27 @@ export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, is
     onAnalyze(request)
   }
 
-  function tryDemo() {
+  function tryDemo(sample = demoIssue) {
     setMode('paste')
-    setUrl(demoIssue.url)
-    setTitle(demoIssue.title)
-    setDescription(demoIssue.body)
-    setRepositoryContext('React application with a responsive navigation bar.')
+    setUrl(sample.url || '')
+    setTitle(sample.title)
+    setDescription(sample.body)
+    setRepositoryContext(sample.repository)
     setFetchedIssue({
-      title: demoIssue.title,
-      body: demoIssue.body,
-      html_url: demoIssue.url,
-      repository: 'demo/repo',
-      labels: ['good first issue', 'responsive design'],
+      title: sample.title,
+      body: sample.body,
+      html_url: sample.url || '',
+      repository: sample.repository,
+      labels: sample.labels,
       state: 'open',
     })
     setLocalError('')
     clearError?.()
     const request = {
-      issueTitle: demoIssue.title,
-      issueDescription: demoIssue.body,
-      repositoryContext: 'React application with a responsive navigation bar.',
-      issueUrl: demoIssue.url,
+      issueTitle: sample.title,
+      issueDescription: sample.body,
+      repositoryContext: sample.repository,
+      issueUrl: sample.url || '',
       language,
     }
     setLastSubmitted(request)
@@ -118,7 +118,23 @@ export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, is
       <div className="field-group"><label htmlFor="repository-context">Repository context <span className="optional">OPTIONAL</span></label><textarea id="repository-context" rows={2} value={repositoryContext} onChange={(event) => setRepositoryContext(event.target.value)} placeholder="Tech stack, relevant files, or anything else that might help…" maxLength={10000} /></div>
       <div className="form-footer">
         <label className="language-select" htmlFor="analysis-language"><span>Explain in</span><select id="analysis-language" value={language} onChange={(event) => setLanguage(event.target.value)}><option value="english">English</option><option value="hinglish">Hinglish</option></select></label>
-        <button className="demo-link" onClick={tryDemo} disabled={loading}><Sparkles size={15} /> Try demo issue</button>
+        <span className="demo-link"><Sparkles size={15} /> Pick a sample issue</span>
+      </div>
+
+      <div className="demo-issues" aria-label="Sample issues to analyze">
+        {demoIssues.map((sample, index) => (
+          <button
+            className="demo-issue-card"
+            key={sample.id}
+            onClick={() => tryDemo(sample)}
+            disabled={loading || fetching}
+            type="button"
+          >
+            <span className="demo-issue-top"><span className="demo-issue-number">0{index + 1}</span><span className="demo-issue-category">{sample.category}</span></span>
+            <strong>{sample.title}</strong>
+            <span className="demo-issue-action">Load &amp; analyze <ArrowUpRight size={12} /></span>
+          </button>
+        ))}
       </div>
 
       {shownIssue && <div className="issue-preview"><CheckCircle2 size={17} /><div><strong>{shownIssue.title}</strong><span>{shownIssue.repository || 'Issue preview'}{shownIssue.labels?.length ? ` · ${shownIssue.labels.slice(0, 3).join(', ')}` : ''}</span></div></div>}
