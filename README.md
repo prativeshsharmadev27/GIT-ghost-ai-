@@ -47,6 +47,7 @@ The Vite development server proxies `/api` requests to `http://localhost:5000`. 
 
 - Analyze a GitHub issue URL or a pasted issue description.
 - Try three built-in sample issues covering responsive UI, safe Git undo guidance, and merge-conflict documentation.
+- Browse and filter the sample issues in the Issue Explorer, then load one into the analyzer.
 - Ask the AI mentor follow-up questions about the issue and its roadmap in English or Hinglish.
 - Choose English or Hinglish explanations.
 - Learn Git fundamentals with twelve short lessons and a contribution workflow.

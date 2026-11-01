@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { analyzeIssue as requestAnalysis, fetchIssue } from '../services/api'
 
 function getSavedAnalysis() {
@@ -14,6 +14,7 @@ export default function useAnalysis() {
   const [error, setError] = useState(null)
   const [issueData, setIssueData] = useState(() => getSavedAnalysis()?.issue || null)
   const [analysisData, setAnalysisData] = useState(() => getSavedAnalysis()?.analysis || null)
+  const clearError = useCallback(() => setError(null), [])
 
   async function fetchGitHubIssue(url) {
     setLoading(true)
@@ -60,6 +61,6 @@ export default function useAnalysis() {
     analysisData,
     fetchGitHubIssue,
     analyzeIssue,
-    clearError: () => setError(null),
+    clearError,
   }
 }

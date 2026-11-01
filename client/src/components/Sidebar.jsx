@@ -1,8 +1,9 @@
-import { BookOpen, ChartNoAxesColumnIncreasing, GitBranch, LayoutDashboard, Menu, X } from 'lucide-react'
+import { BookOpen, ChartNoAxesColumnIncreasing, Compass, GitBranch, LayoutDashboard, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 const navigation = [
   { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { id: 'explorer', label: 'Issue Explorer', icon: Compass },
   { id: 'analyzer', label: 'Analyze Issue', icon: GitBranch },
   { id: 'learning', label: 'Git Learning', icon: BookOpen },
   { id: 'progress', label: 'My Progress', icon: ChartNoAxesColumnIncreasing },

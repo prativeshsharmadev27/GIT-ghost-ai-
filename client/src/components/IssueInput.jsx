@@ -1,17 +1,24 @@
 import { ArrowUpRight, CheckCircle2, FileText, GitBranch, LoaderCircle, Sparkles } from 'lucide-react'
 import { useState } from 'react'
-import demoIssue, { demoIssues } from '../data/demoIssue'
+import { demoIssues } from '../data/demoIssue'
 
-export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, issueData, clearError }) {
-  const [mode, setMode] = useState('github')
+export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, issueData, clearError, demoIssue }) {
+  const [mode, setMode] = useState(() => (demoIssue ? 'paste' : 'github'))
   const [url, setUrl] = useState('')
-  const [title, setTitle] = useState('')
-  const [description, setDescription] = useState('')
-  const [repositoryContext, setRepositoryContext] = useState('')
+  const [title, setTitle] = useState(() => demoIssue?.title || '')
+  const [description, setDescription] = useState(() => demoIssue?.body || '')
+  const [repositoryContext, setRepositoryContext] = useState(() => demoIssue?.repository || '')
   const [language, setLanguage] = useState('english')
   const [localError, setLocalError] = useState('')
   const [fetching, setFetching] = useState(false)
-  const [fetchedIssue, setFetchedIssue] = useState(null)
+  const [fetchedIssue, setFetchedIssue] = useState(() => demoIssue ? {
+    title: demoIssue.title,
+    body: demoIssue.body,
+    html_url: '',
+    repository: demoIssue.repository,
+    labels: demoIssue.labels,
+    state: 'open',
+  } : null)
   const [lastSubmitted, setLastSubmitted] = useState(null)
 
   async function fetchIssue() {
@@ -60,7 +67,7 @@ export default function IssueInput({ onFetchIssue, onAnalyze, loading, error, is
     onAnalyze(request)
   }
 
-  function tryDemo(sample = demoIssue) {
+  function tryDemo(sample) {
     setMode('paste')
     setUrl(sample.url || '')
     setTitle(sample.title)
