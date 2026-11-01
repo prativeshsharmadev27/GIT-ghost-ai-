@@ -6,6 +6,7 @@ const helmet = require('helmet');
 const healthRouter = require('./routes/health');
 const githubRouter = require('./routes/github');
 const analyzeRouter = require('./routes/analyze');
+const chatRouter = require('./routes/chat');
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -17,6 +18,7 @@ app.use(express.json({ limit: '50kb' }));
 app.use('/api/health', healthRouter);
 app.use('/api/github', githubRouter);
 app.use('/api/analyze', analyzeRouter);
+app.use('/api/chat', chatRouter);
 
 app.use((error, _request, response, _next) => {
   if (response.headersSent) return;

@@ -77,6 +77,47 @@ test('analysis endpoint reports missing Gemini configuration clearly', async () 
   }
 });
 
+test('chat endpoint validates conversation messages before calling Gemini', async () => {
+  const response = await request('/api/chat', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      issue: { title: 'Help me understand this issue' },
+      messages: [{ role: 'assistant', content: 'What do you need help with?' }],
+      language: 'english',
+    }),
+  });
+  const payload = await response.json();
+
+  assert.equal(response.status, 400);
+  assert.equal(payload.code, 'INVALID_CHAT_REQUEST');
+});
+
+test('chat endpoint reports missing Gemini configuration clearly', async () => {
+  const originalKey = process.env.GEMINI_API_KEY;
+  delete process.env.GEMINI_API_KEY;
+  try {
+    const response = await request('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        issue: { title: 'Fix the navbar', description: 'It overlaps on mobile.' },
+        analysis: { summary: 'Fix responsive navigation.' },
+        messages: [{ role: 'user', content: 'What should I do first?' }],
+        language: 'hinglish',
+      }),
+    });
+    const payload = await response.json();
+
+    assert.equal(response.status, 503);
+    assert.equal(payload.code, 'MISSING_API_KEY');
+    assert.match(payload.error, /GEMINI_API_KEY/);
+  } finally {
+    if (originalKey === undefined) delete process.env.GEMINI_API_KEY;
+    else process.env.GEMINI_API_KEY = originalKey;
+  }
+});
+
 test('JSON body parser enforces the 50kb request size limit', async () => {
   const response = await request('/api/analyze', {
     method: 'POST',

@@ -34,3 +34,10 @@ export function analyzeIssue(body) {
     body: JSON.stringify(body),
   })
 }
+
+export function chatWithMentor(body) {
+  return request('/chat', {
+    method: 'POST',
+    body: JSON.stringify(body),
+  })
+}

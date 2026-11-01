@@ -46,6 +46,7 @@ The Vite development server proxies `/api` requests to `http://localhost:5000`. 
 ## Features
 
 - Analyze a GitHub issue URL or a pasted issue description.
+- Ask the AI mentor follow-up questions about the issue and its roadmap in English or Hinglish.
 - Choose English or Hinglish explanations.
 - Learn Git fundamentals with twelve short lessons and a contribution workflow.
 - Track roadmap checklists in browser localStorage.
@@ -57,6 +58,7 @@ The Vite development server proxies `/api` requests to `http://localhost:5000`. 
 - `GET /api/health` — server health and timestamp.
 - `GET /api/github/issue?url=<issue-url>` — fetches public issue details from GitHub.
 - `POST /api/analyze` — creates a structured analysis using Gemini.
+- `POST /api/chat` — answers bounded, issue-aware mentor chat messages using Gemini.
 
 ## Build
 
